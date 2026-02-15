@@ -70,3 +70,14 @@ Cannibalization analysis MUST be included as a section in every optimization rep
 - Flag overlaps ≥50% with combined spend and ROAS comparison
 - Recommend consolidation or negative exclusions
 - This is NOT a separate analysis — it's part of the standard report
+
+## CRITICAL RULE: Frequency Alert Thresholds
+
+Every optimization report must check frequency per ad set and flag:
+- **> 4x (Prospecting):** ⚠️ WARNING — creative refresh soon
+- **> 6x (Retargeting):** ⚠️ WARNING — creative refresh recommended  
+- **> 8x (Any type):** 🔴 CRITICAL — immediate creative refresh or pause
+- **> 12x (Any type):** 🔴 EMERGENCY — recommend pause
+
+Optimal frequency sweet spot: **2.0 - 3.0x** (based on ER ROAS analysis).
+See FREQUENCY_STRATEGY.md for full data.

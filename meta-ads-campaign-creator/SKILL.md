@@ -157,3 +157,18 @@ AD SETS:
 ADS:
 [details with atomic unit references]
 ```
+
+## CRITICAL RULE: Frequency Caps (MANDATORY on every new ad set)
+
+Set `frequency_control_specs` on EVERY new ad set:
+
+| Campaign Type | Max Frequency | Per |
+|---------------|---------------|-----|
+| Prospecting (TOF) | 3 | 7 days |
+| Retargeting (MOF) | 4 | 7 days |
+| Retargeting (BOF/DPA) | 5 | 7 days |
+| ASC / Advantage+ | 4 | 7 days |
+
+Data basis: 90-day analysis shows optimal ROAS at frequency 2-3x. Performance degrades beyond 5x.
+
+Include frequency cap in every draft spec sent to Orchestrator.
