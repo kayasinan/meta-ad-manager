@@ -1,0 +1,28 @@
+# Credentials — NEVER commit
+*.credentials
+*.secret
+*.key
+*.token
+.env
+credentials/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated images
+*.png
+*.jpg
+*.jpeg
+!docs/*.png
+
+# Temp
+/tmp/
+*.tmp
