@@ -151,3 +151,76 @@ QUARTERLY REFRESH:
 ---
 
 *This document defines the creative selection strategy. All changes must be pushed to the GitHub repo.*
+
+---
+
+## Human Creative Input (Test & Learn)
+
+### How It Works
+Sinan (or team) can submit a sample creative at any time — an image, a concept sketch, a competitor screenshot, or a text brief. The system treats it as a **test candidate** alongside the scored selections.
+
+### Input Flow
+```
+Human sends sample creative (image/concept/brief)
+        │
+        ▼
+Agent 5 (Creative Producer):
+  1. Generates the submitted concept as-is (faithful to input)
+  2. Generates 2-3 variations (different copy, color, product combos)
+  3. QC scores all variants
+        │
+        ▼
+Agent 6 (Campaign Creator):
+  Creates test ads PAUSED alongside the regular cycle ads
+  Tags: source = "human_input", test_id = unique ref
+        │
+        ▼
+Agent 7 (Campaign Monitor):
+  Tracks performance after launch
+  After 7 days with sufficient data (spend ≥ $50):
+    - ROAS ≥ 3x → ✅ WINNER — added to creative_library as new direction
+    - ROAS < 3x → ❌ LEARNED — logged but not reused
+```
+
+### Supabase Tracking
+
+**`creative_tests`** table:
+| Column | Type | Description |
+|--------|------|-------------|
+| id | uuid | Primary key |
+| brand_id | uuid | FK to brands |
+| submitted_by | text | Who submitted (e.g., "sinan") |
+| submitted_at | timestamptz | When submitted |
+| input_type | text | image / concept / brief / competitor |
+| input_description | text | What was submitted |
+| input_image_url | text | Image if provided |
+| status | text | PENDING / TESTING / WINNER / LEARNED |
+| test_ad_ids | text[] | Meta ad IDs created for testing |
+| result_roas | numeric | Actual ROAS after test period |
+| result_spend | numeric | Spend during test |
+| added_to_library | boolean | Whether it graduated to creative_library |
+| library_id | uuid | FK if added |
+| notes | text | Learnings from the test |
+
+### Selection Engine Integration
+- Human inputs get **automatic slot reservation**: 1-2 of the 5-6 weekly slots are reserved for test candidates when available
+- Regular scored selections fill the remaining 3-4 slots
+- If no human input that week, all 5-6 slots go to scored selections
+- Once a test creative becomes a WINNER, it enters the regular scoring system with its own cluster assignment
+
+### Feedback Loop
+```
+WINNER path:
+  Test ad ROAS ≥ 3x
+  → Added to creative_library with real performance data
+  → Assigned to existing cluster or creates new cluster
+  → Enters regular scoring rotation
+  → Variations of it will be created in future cycles
+
+LEARNED path:
+  Test ad ROAS < 3x
+  → Logged in creative_tests with notes on why
+  → NOT added to creative_library
+  → Similar concepts get a penalty in future scoring
+  → Learnings inform the "never-produce" list if pattern emerges
+```
