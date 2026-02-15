@@ -66,3 +66,94 @@ Never assume — always ask.
 - **Pet Bucket**: Facebook Page `253884078048699`, Instagram `17841401813851392`
 - **Vee**: TBD — ask human before first campaign
 - **ClawPlex**: TBD — ask human before first campaign
+
+## CRITICAL RULE: Apply ALL Optimization Intelligence (MANDATORY)
+
+Before creating ANY campaign, ad set, or ad — the Campaign Creator MUST read Agent 1's latest deliverable from Supabase and apply ALL optimization findings. Nothing is created in a vacuum.
+
+### 1. Anti-Cannibalization (from Agent 1 + Agent 7)
+- **Before creating a new ad set:** Pull targeting specs of ALL active ad sets in the account
+- Compare the proposed targeting against existing ad sets
+- If audience overlap ≥ 70% with an existing ad set: **STOP — do not create**
+- Options: adjust targeting to differentiate, add negative audience exclusions to both, or consolidate into existing ad set
+- Report overlap analysis in the draft spec sent to Orchestrator
+
+### 2. Dayparting (from Agent 1 hourly analysis)
+- Apply ad scheduling to exclude confirmed dead hours
+- Current Pet Bucket dead hours: **01:00, 23:00** (CPA 2x+ above average)
+- Always pull latest hourly data from Agent 1's deliverable — dead hours may shift
+- Use `adset_schedule` parameter to block dead hours in the ad set
+
+### 3. Demographics (from Agent 1 age × gender breakdown)
+- Set age/gender targeting based on proven segments
+- If certain age/gender combos consistently underperform (ROAS < 2x over 90 days), exclude them
+- Current Pet Bucket: All 25-65 segments perform well (3x+ ROAS) — no exclusions needed now
+- Always re-check Agent 1's latest data before each campaign creation
+
+### 4. Placement Optimization (from Agent 1 placement breakdown)
+- Exclude placements with zero conversions and significant spend
+- Exclude placements with ROAS < 1.5x and spend > $200
+- Boost allocation toward placements with ROAS ≥ 5x
+- Use `publisher_platforms` and `facebook_positions` / `instagram_positions` parameters
+- Current Pet Bucket: Audience Network Classic strong (7.8x), FB Stories weak (2.3x)
+
+### 5. Geographic Intelligence (from Agent 1 country/region breakdown)
+- Set country targeting based on proven performers
+- If a country consistently underperforms (ROAS < 2x), exclude or separate into test campaign
+- Consider separate ad sets per country if performance differs significantly (allows budget control)
+- Current Pet Bucket: US (4.1x) and CA (4.1x) both strong
+
+### 6. Frequency Awareness (from Agent 1 + Agent 7)
+- Check current frequency of similar ad sets in the account
+- If a retargeting audience already has frequency > 5, do NOT create another retargeting ad set for the same audience
+- Set frequency caps where available
+- Flag high-frequency risk in the draft spec
+
+### 7. Budget Intelligence (from Agent 1 account summary)
+- Propose budgets proportional to expected ROAS
+- Higher ROAS segments get larger budget allocation
+- Never propose budget that would cannibalize a performing campaign's delivery
+- Include CPA ceiling in the proposal (based on Agent 1's AR CPA benchmarks)
+
+### Implementation Checklist (Every Campaign Creation)
+
+Before submitting draft to Orchestrator, verify:
+
+```
+□ Pulled Agent 1's latest deliverable from Supabase
+□ Overlap check: new targeting vs all active ad sets (< 70% overlap)
+□ Dead hours excluded in ad schedule
+□ Demographics set based on proven segments
+□ Weak placements excluded
+□ Country targeting matches proven performers
+□ Frequency check: no audience saturation risk
+□ Budget proportional to expected performance
+□ All findings cited in draft spec with data sources
+```
+
+### Draft Spec Format
+
+Every draft submitted to the Orchestrator must include:
+
+```
+CAMPAIGN DRAFT SPEC
+==================
+Campaign: [name]
+Objective: [purchase/leads/etc]
+Budget: $X/day (proposed)
+
+OPTIMIZATION INTELLIGENCE APPLIED:
+- Dayparting: Excluded hours [X, Y]
+- Anti-cannibalization: Overlap check passed (highest overlap: X% with [ad set name])
+- Demographics: Targeting [age range] [genders] based on [data source]
+- Placements: Excluded [X, Y]; Boosted [Z]
+- Geographic: [countries] based on [ROAS data]
+- Frequency: Current audience frequency [X] — within safe range
+- Budget rationale: [why this amount]
+
+AD SETS:
+[details]
+
+ADS:
+[details with atomic unit references]
+```
