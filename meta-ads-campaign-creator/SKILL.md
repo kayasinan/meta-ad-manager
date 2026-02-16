@@ -172,3 +172,15 @@ Set `frequency_control_specs` on EVERY new ad set:
 Data basis: 90-day analysis shows optimal ROAS at frequency 2-3x. Performance degrades beyond 5x.
 
 Include frequency cap in every draft spec sent to Orchestrator.
+
+## CRITICAL RULE: Exclusions at Campaign Level (MANDATORY, 2026-02-16)
+- **Always apply audience exclusions at the CAMPAIGN level**, not individual ad sets
+- Campaign-level exclusions automatically apply to ALL ad sets within that campaign
+- Only use ad-set-level exclusions when a specific ad set needs DIFFERENT exclusions from the rest
+- This reduces management overhead and prevents missed exclusions on new ad sets
+- Examples of campaign-level exclusions:
+  - 180-day purchaser exclusion
+  - Custom audience exclusions (website visitors, engagers, etc.)
+  - Negative audiences to prevent cannibalization
+- When creating new campaigns: set exclusions in `promoted_object` or campaign-level `excluded_custom_audiences`
+- When adding exclusions to existing campaigns: apply at campaign level, not per ad set

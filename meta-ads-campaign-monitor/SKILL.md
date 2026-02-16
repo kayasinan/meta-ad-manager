@@ -81,3 +81,7 @@ Every optimization report must check frequency per ad set and flag:
 
 Optimal frequency sweet spot: **2.0 - 3.0x** (based on ER ROAS analysis).
 See FREQUENCY_STRATEGY.md for full data.
+
+## RULE: Audit Exclusion Placement
+- Flag ad-set-level exclusions that should be at campaign level
+- If all ad sets in a campaign have the same exclusion, recommend moving it to campaign level
